@@ -16,8 +16,6 @@ public class ApiConstants {
     public static final String ALL_PATH = "/**";
 
     // Constantes de seguridad
-    public static final String JWT_SECRET_KEY = "${jwt.secret:defaultSecretKey}";
-    public static final long JWT_EXPIRATION_TIME = 86400000; // 24 horas en millisegundos
     public static final String JWT_TOKEN_PREFIX = "Bearer ";
     public static final String JWT_HEADER_STRING = "Authorization";
 
