@@ -35,7 +35,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleAllUncaught(Exception ex, WebRequest request) {
+    protected ResponseEntity<Object> handleAllUncaught(WebRequest request) {
         String errorMessage = messageSource.getMessage("error.internal", null, LocaleContextHolder.getLocale());
 
         ApiError apiError = ApiError.builder()

@@ -50,11 +50,8 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void handleAllUncaught_ShouldReturnInternalServerError() {
-        // Given
-        Exception ex = new RuntimeException("Unexpected error");
-
         // When
-        ResponseEntity<Object> response = exceptionHandler.handleAllUncaught(ex, webRequest);
+        ResponseEntity<Object> response = exceptionHandler.handleAllUncaught(webRequest);
         ApiError error = (ApiError) response.getBody();
 
         // Then
