@@ -224,6 +224,6 @@ class LoginRequestDTOTest {
 
         // Then
         assertTrue(toString.contains(USERNAME));
-        assertTrue(toString.contains(PASSWORD));
+        assertFalse(toString.contains(PASSWORD));
     }
 }

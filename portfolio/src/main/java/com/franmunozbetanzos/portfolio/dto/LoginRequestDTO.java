@@ -16,4 +16,9 @@ public class LoginRequestDTO {
     private String username;
     @NotBlank(message = "Username is required")
     private String password;
+
+    @Override
+    public String toString() {
+        return "LoginRequestDTO{" + "username='" + username + '\'' + '}';
+    }
 }
