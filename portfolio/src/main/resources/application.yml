@@ -1,13 +1,18 @@
+jwt:
+  secret: ${JWT_SECRET:VGhpc0lzQVZlcnlTZWN1cmVBbmRMb25nU2VjcmV0S2V5Rm9yVGhlSldUVG9rZW5HZW5lcmF0aW9u}
+  expiration: 7200000
+  
 spring:
-        application:
-          name: portfolio
-        datasource:
-          url: jdbc:postgresql://localhost:5433/portfolio
-          username: franmb93
-          password: franmb93
-        jpa:
-          hibernate:
-            ddl-auto: update
-          show-sql: true
-          properties:
-            hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  application:
+    name: portfolio
+  datasource:
+    url: jdbc:postgresql://localhost:5433/portfolio
+    username: franmb93
+    password: franmb93
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
