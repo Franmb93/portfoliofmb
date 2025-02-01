@@ -11,14 +11,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static com.franmunozbetanzos.portfolio.constant.ApiConstants.AUTH_PATH;
 import static com.franmunozbetanzos.portfolio.constant.ApiConstants.LOGIN_PATH;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -42,8 +41,7 @@ class AuthControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders
-                .standaloneSetup(authController)
+        mockMvc = MockMvcBuilders.standaloneSetup(authController)
                 .build();
         objectMapper = new ObjectMapper();
     }
@@ -65,8 +63,7 @@ class AuthControllerTest {
         when(authService.login(any(LoginRequestDTO.class))).thenReturn(loginResponse);
 
         // When & Then
-        mockMvc.perform(post(AUTH_PATH + LOGIN_PATH)
-                                .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(AUTH_PATH + LOGIN_PATH).contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -86,12 +83,10 @@ class AuthControllerTest {
                 .build();
 
         // When & Then
-        mockMvc.perform(post(AUTH_PATH + LOGIN_PATH)
-                                .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(AUTH_PATH + LOGIN_PATH).contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(result -> assertTrue(
-                        result.getResolvedException() instanceof MethodArgumentNotValidException));
+                .andExpect(result -> assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException()));
 
         verifyNoInteractions(authService);
     }
@@ -105,12 +100,10 @@ class AuthControllerTest {
                 .build();
 
         // When & Then
-        mockMvc.perform(post(AUTH_PATH + LOGIN_PATH)
-                                .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(AUTH_PATH + LOGIN_PATH).contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(result -> assertTrue(
-                        result.getResolvedException() instanceof MethodArgumentNotValidException));
+                .andExpect(result -> assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException()));
 
         verifyNoInteractions(authService);
     }
@@ -118,8 +111,7 @@ class AuthControllerTest {
     @Test
     void login_ShouldReturn400_WhenRequestBodyIsInvalid() throws Exception {
         // When & Then
-        mockMvc.perform(post(AUTH_PATH + LOGIN_PATH)
-                                .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(AUTH_PATH + LOGIN_PATH).contentType(MediaType.APPLICATION_JSON)
                                 .content("invalid json"))
                 .andExpect(status().isBadRequest());
 
@@ -135,8 +127,7 @@ class AuthControllerTest {
                 .build();
 
         // When & Then
-        mockMvc.perform(post(AUTH_PATH + LOGIN_PATH)
-                                .contentType(MediaType.TEXT_PLAIN)
+        mockMvc.perform(post(AUTH_PATH + LOGIN_PATH).contentType(MediaType.TEXT_PLAIN)
                                 .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isUnsupportedMediaType());
 
