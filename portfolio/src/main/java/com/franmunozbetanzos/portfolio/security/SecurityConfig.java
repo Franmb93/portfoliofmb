@@ -24,6 +24,8 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(ApiConstants.PUBLIC_PATH + ApiConstants.ALL_PATH)
                         .permitAll()
+                        .requestMatchers(ApiConstants.TEST_PATH + ApiConstants.ALL_PATH)
+                        .permitAll()
                         .requestMatchers(ApiConstants.API_BASE_PATH + ApiConstants.ALL_PATH)
                         .authenticated()
                         .anyRequest()
