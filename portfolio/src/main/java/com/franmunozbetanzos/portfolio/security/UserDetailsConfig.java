@@ -19,18 +19,13 @@ public class UserDetailsConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("userPass"))
-                .roles("USER")
-                .build();
 
         UserDetails admin = User.builder()
-                .username("admin")
+                .username("franmb93")
                 .password(passwordEncoder().encode("adminPass"))
                 .roles("USER", "ADMIN")
                 .build();
 
-        return new InMemoryUserDetailsManager(user, admin);
+        return new InMemoryUserDetailsManager(admin);
     }
 }
