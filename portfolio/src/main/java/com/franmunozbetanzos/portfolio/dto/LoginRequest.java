@@ -12,9 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginRequest {
 
-    @NotBlank(message = "Username is required")
+    @NotBlank(message = "{validation.login.username.notblank}")
     private String username;
-    @NotBlank(message = "Username is required")
+
+    @NotBlank(message = "{validation.login.password.notblank}")
     private String password;
 
     @Override

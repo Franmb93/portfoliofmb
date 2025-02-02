@@ -1,11 +1,15 @@
 package com.franmunozbetanzos.portfolio.dto;
 
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.MessageInterpolator;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import static jakarta.validation.Validation.buildDefaultValidatorFactory;
@@ -16,11 +20,21 @@ class LoginRequestTest {
     private static final String USERNAME = "testUser";
     private static final String PASSWORD = "testPassword";
     private static Validator validator;
+    private static MessageInterpolator messageInterpolator;
 
     @BeforeAll
     static void setUp() {
         try (ValidatorFactory factory = buildDefaultValidatorFactory()) {
-            validator = factory.getValidator();
+            // Crear el interpolador de mensajes con el ResourceBundle
+            ResourceBundle bundle = ResourceBundle.getBundle("messages");
+            messageInterpolator = new ResourceBundleMessageInterpolator(
+                    new PlatformResourceBundleLocator("messages")
+            );
+
+            // Configurar el validator con el interpolador
+            validator = factory.usingContext()
+                    .messageInterpolator(messageInterpolator)
+                    .getValidator();
         }
     }
 
@@ -105,7 +119,7 @@ class LoginRequestTest {
 
         // Then
         assertEquals(1, violations.size());
-        assertEquals("Username is required", violations.iterator()
+        assertEquals("El nombre de usuario es obligatorio", violations.iterator()
                 .next()
                 .getMessage());
     }
@@ -123,7 +137,7 @@ class LoginRequestTest {
 
         // Then
         assertEquals(1, violations.size());
-        assertEquals("Username is required", violations.iterator()
+        assertEquals("El nombre de usuario es obligatorio", violations.iterator()
                 .next()
                 .getMessage());
     }
@@ -141,7 +155,7 @@ class LoginRequestTest {
 
         // Then
         assertEquals(1, violations.size());
-        assertEquals("Username is required", violations.iterator()
+        assertEquals("El nombre de usuario es obligatorio", violations.iterator()
                 .next()
                 .getMessage());
     }
@@ -158,7 +172,7 @@ class LoginRequestTest {
 
         // Then
         assertEquals(1, violations.size());
-        assertEquals("Username is required", violations.iterator()
+        assertEquals("La contraseña es obligatoria", violations.iterator()
                 .next()
                 .getMessage());
     }
@@ -176,7 +190,7 @@ class LoginRequestTest {
 
         // Then
         assertEquals(1, violations.size());
-        assertEquals("Username is required", violations.iterator()
+        assertEquals("La contraseña es obligatoria", violations.iterator()
                 .next()
                 .getMessage());
     }
@@ -194,7 +208,7 @@ class LoginRequestTest {
 
         // Then
         assertEquals(1, violations.size());
-        assertEquals("Username is required", violations.iterator()
+        assertEquals("La contraseña es obligatoria", violations.iterator()
                 .next()
                 .getMessage());
     }
