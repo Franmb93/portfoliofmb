@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LoginResponseDTOTest {
+class LoginResponseTest {
 
     private static final String TOKEN = "test.jwt.token";
     private static final String USERNAME = "testUser";
@@ -13,7 +13,7 @@ class LoginResponseDTOTest {
     @Test
     void builder_ShouldCreateObjectWithAllProperties() {
         // When
-        LoginResponseDTO response = LoginResponseDTO.builder()
+        LoginResponse response = LoginResponse.builder()
                 .token(TOKEN)
                 .username(USERNAME)
                 .roles(ROLES)
@@ -28,7 +28,7 @@ class LoginResponseDTOTest {
     @Test
     void noArgsConstructor_ShouldCreateEmptyObject() {
         // When
-        LoginResponseDTO response = new LoginResponseDTO();
+        LoginResponse response = new LoginResponse();
 
         // Then
         assertNull(response.getToken());
@@ -39,7 +39,7 @@ class LoginResponseDTOTest {
     @Test
     void allArgsConstructor_ShouldCreateFullObject() {
         // When
-        LoginResponseDTO response = new LoginResponseDTO(TOKEN, USERNAME, ROLES);
+        LoginResponse response = new LoginResponse(TOKEN, USERNAME, ROLES);
 
         // Then
         assertEquals(TOKEN, response.getToken());
@@ -50,7 +50,7 @@ class LoginResponseDTOTest {
     @Test
     void settersAndGetters_ShouldWorkCorrectly() {
         // Given
-        LoginResponseDTO response = new LoginResponseDTO();
+        LoginResponse response = new LoginResponse();
 
         // When
         response.setToken(TOKEN);
@@ -66,8 +66,8 @@ class LoginResponseDTOTest {
     @Test
     void equals_ShouldReturnTrue_WhenObjectsAreEqual() {
         // Given
-        LoginResponseDTO response1 = new LoginResponseDTO(TOKEN, USERNAME, ROLES);
-        LoginResponseDTO response2 = new LoginResponseDTO(TOKEN, USERNAME, ROLES);
+        LoginResponse response1 = new LoginResponse(TOKEN, USERNAME, ROLES);
+        LoginResponse response2 = new LoginResponse(TOKEN, USERNAME, ROLES);
 
         // Then
         assertEquals(response1, response2);
@@ -77,8 +77,8 @@ class LoginResponseDTOTest {
     @Test
     void equals_ShouldReturnFalse_WhenObjectsAreDifferent() {
         // Given
-        LoginResponseDTO response1 = new LoginResponseDTO(TOKEN, USERNAME, ROLES);
-        LoginResponseDTO response2 = new LoginResponseDTO("different.token", USERNAME, ROLES);
+        LoginResponse response1 = new LoginResponse(TOKEN, USERNAME, ROLES);
+        LoginResponse response2 = new LoginResponse("different.token", USERNAME, ROLES);
 
         // Then
         assertNotEquals(response1, response2);
@@ -88,7 +88,7 @@ class LoginResponseDTOTest {
     @Test
     void toString_ShouldContainAllFields() {
         // Given
-        LoginResponseDTO response = new LoginResponseDTO(TOKEN, USERNAME, ROLES);
+        LoginResponse response = new LoginResponse(TOKEN, USERNAME, ROLES);
 
         // When
         String toString = response.toString();
@@ -103,10 +103,10 @@ class LoginResponseDTOTest {
     @Test
     void deepCopy_ShouldCreateIndependentCopy() {
         // Given
-        LoginResponseDTO original = new LoginResponseDTO(TOKEN, USERNAME, ROLES);
+        LoginResponse original = new LoginResponse(TOKEN, USERNAME, ROLES);
 
         // When
-        LoginResponseDTO copy = LoginResponseDTO.builder()
+        LoginResponse copy = LoginResponse.builder()
                 .token(original.getToken())
                 .username(original.getUsername())
                 .roles(original.getRoles().clone())
@@ -122,7 +122,7 @@ class LoginResponseDTOTest {
     @Test
     void withNullValues_ShouldHandleNullsGracefully() {
         // Given
-        LoginResponseDTO response = new LoginResponseDTO(null, null, null);
+        LoginResponse response = new LoginResponse(null, null, null);
 
         // Then
         assertNull(response.getToken());

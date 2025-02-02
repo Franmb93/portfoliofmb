@@ -11,7 +11,7 @@ import java.util.Set;
 import static jakarta.validation.Validation.buildDefaultValidatorFactory;
 import static org.junit.jupiter.api.Assertions.*;
 
-class LoginRequestDTOTest {
+class LoginRequestTest {
 
     private static final String USERNAME = "testUser";
     private static final String PASSWORD = "testPassword";
@@ -27,7 +27,7 @@ class LoginRequestDTOTest {
     @Test
     void builder_ShouldCreateObjectWithAllProperties() {
         // When
-        LoginRequestDTO request = LoginRequestDTO.builder()
+        LoginRequest request = LoginRequest.builder()
                 .username(USERNAME)
                 .password(PASSWORD)
                 .build();
@@ -40,7 +40,7 @@ class LoginRequestDTOTest {
     @Test
     void noArgsConstructor_ShouldCreateEmptyObject() {
         // When
-        LoginRequestDTO request = new LoginRequestDTO();
+        LoginRequest request = new LoginRequest();
 
         // Then
         assertNull(request.getUsername());
@@ -50,7 +50,7 @@ class LoginRequestDTOTest {
     @Test
     void allArgsConstructor_ShouldCreateFullObject() {
         // When
-        LoginRequestDTO request = new LoginRequestDTO(USERNAME, PASSWORD);
+        LoginRequest request = new LoginRequest(USERNAME, PASSWORD);
 
         // Then
         assertEquals(USERNAME, request.getUsername());
@@ -60,7 +60,7 @@ class LoginRequestDTOTest {
     @Test
     void settersAndGetters_ShouldWorkCorrectly() {
         // Given
-        LoginRequestDTO request = new LoginRequestDTO();
+        LoginRequest request = new LoginRequest();
 
         // When
         request.setUsername(USERNAME);
@@ -74,8 +74,8 @@ class LoginRequestDTOTest {
     @Test
     void equals_ShouldReturnTrue_WhenObjectsAreEqual() {
         // Given
-        LoginRequestDTO request1 = new LoginRequestDTO(USERNAME, PASSWORD);
-        LoginRequestDTO request2 = new LoginRequestDTO(USERNAME, PASSWORD);
+        LoginRequest request1 = new LoginRequest(USERNAME, PASSWORD);
+        LoginRequest request2 = new LoginRequest(USERNAME, PASSWORD);
 
         // Then
         assertEquals(request1, request2);
@@ -85,8 +85,8 @@ class LoginRequestDTOTest {
     @Test
     void equals_ShouldReturnFalse_WhenObjectsAreDifferent() {
         // Given
-        LoginRequestDTO request1 = new LoginRequestDTO(USERNAME, PASSWORD);
-        LoginRequestDTO request2 = new LoginRequestDTO("differentUser", PASSWORD);
+        LoginRequest request1 = new LoginRequest(USERNAME, PASSWORD);
+        LoginRequest request2 = new LoginRequest("differentUser", PASSWORD);
 
         // Then
         assertNotEquals(request1, request2);
@@ -96,12 +96,12 @@ class LoginRequestDTOTest {
     @Test
     void validation_ShouldFailWhenUsernameIsNull() {
         // Given
-        LoginRequestDTO request = LoginRequestDTO.builder()
+        LoginRequest request = LoginRequest.builder()
                 .password(PASSWORD)
                 .build();
 
         // When
-        Set<ConstraintViolation<LoginRequestDTO>> violations = validator.validate(request);
+        Set<ConstraintViolation<LoginRequest>> violations = validator.validate(request);
 
         // Then
         assertEquals(1, violations.size());
@@ -113,13 +113,13 @@ class LoginRequestDTOTest {
     @Test
     void validation_ShouldFailWhenUsernameIsEmpty() {
         // Given
-        LoginRequestDTO request = LoginRequestDTO.builder()
+        LoginRequest request = LoginRequest.builder()
                 .username("")
                 .password(PASSWORD)
                 .build();
 
         // When
-        Set<ConstraintViolation<LoginRequestDTO>> violations = validator.validate(request);
+        Set<ConstraintViolation<LoginRequest>> violations = validator.validate(request);
 
         // Then
         assertEquals(1, violations.size());
@@ -131,13 +131,13 @@ class LoginRequestDTOTest {
     @Test
     void validation_ShouldFailWhenUsernameIsBlank() {
         // Given
-        LoginRequestDTO request = LoginRequestDTO.builder()
+        LoginRequest request = LoginRequest.builder()
                 .username("   ")
                 .password(PASSWORD)
                 .build();
 
         // When
-        Set<ConstraintViolation<LoginRequestDTO>> violations = validator.validate(request);
+        Set<ConstraintViolation<LoginRequest>> violations = validator.validate(request);
 
         // Then
         assertEquals(1, violations.size());
@@ -149,12 +149,12 @@ class LoginRequestDTOTest {
     @Test
     void validation_ShouldFailWhenPasswordIsNull() {
         // Given
-        LoginRequestDTO request = LoginRequestDTO.builder()
+        LoginRequest request = LoginRequest.builder()
                 .username(USERNAME)
                 .build();
 
         // When
-        Set<ConstraintViolation<LoginRequestDTO>> violations = validator.validate(request);
+        Set<ConstraintViolation<LoginRequest>> violations = validator.validate(request);
 
         // Then
         assertEquals(1, violations.size());
@@ -166,13 +166,13 @@ class LoginRequestDTOTest {
     @Test
     void validation_ShouldFailWhenPasswordIsEmpty() {
         // Given
-        LoginRequestDTO request = LoginRequestDTO.builder()
+        LoginRequest request = LoginRequest.builder()
                 .username(USERNAME)
                 .password("")
                 .build();
 
         // When
-        Set<ConstraintViolation<LoginRequestDTO>> violations = validator.validate(request);
+        Set<ConstraintViolation<LoginRequest>> violations = validator.validate(request);
 
         // Then
         assertEquals(1, violations.size());
@@ -184,13 +184,13 @@ class LoginRequestDTOTest {
     @Test
     void validation_ShouldFailWhenPasswordIsBlank() {
         // Given
-        LoginRequestDTO request = LoginRequestDTO.builder()
+        LoginRequest request = LoginRequest.builder()
                 .username(USERNAME)
                 .password("   ")
                 .build();
 
         // When
-        Set<ConstraintViolation<LoginRequestDTO>> violations = validator.validate(request);
+        Set<ConstraintViolation<LoginRequest>> violations = validator.validate(request);
 
         // Then
         assertEquals(1, violations.size());
@@ -202,13 +202,13 @@ class LoginRequestDTOTest {
     @Test
     void validation_ShouldPassWithValidFields() {
         // Given
-        LoginRequestDTO request = LoginRequestDTO.builder()
+        LoginRequest request = LoginRequest.builder()
                 .username(USERNAME)
                 .password(PASSWORD)
                 .build();
 
         // When
-        Set<ConstraintViolation<LoginRequestDTO>> violations = validator.validate(request);
+        Set<ConstraintViolation<LoginRequest>> violations = validator.validate(request);
 
         // Then
         assertTrue(violations.isEmpty());
@@ -217,7 +217,7 @@ class LoginRequestDTOTest {
     @Test
     void toString_ShouldNotIncludePasswordValue() {
         // Given
-        LoginRequestDTO request = new LoginRequestDTO(USERNAME, PASSWORD);
+        LoginRequest request = new LoginRequest(USERNAME, PASSWORD);
 
         // When
         String toString = request.toString();
