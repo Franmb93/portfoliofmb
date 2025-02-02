@@ -1,7 +1,7 @@
 package com.franmunozbetanzos.portfolio.service;
 
-import com.franmunozbetanzos.portfolio.dto.LoginRequestDTO;
-import com.franmunozbetanzos.portfolio.dto.LoginResponseDTO;
+import com.franmunozbetanzos.portfolio.dto.LoginRequest;
+import com.franmunozbetanzos.portfolio.dto.LoginResponse;
 import com.franmunozbetanzos.portfolio.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +20,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    public LoginResponseDTO login(LoginRequestDTO request) {
+    public LoginResponse login(LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         UserDetails user = (UserDetails) authentication.getPrincipal();
@@ -32,7 +32,7 @@ public class AuthService {
                 .map(role -> role.replace(ROLE_, ""))
                 .toArray(String[]::new);
 
-        return LoginResponseDTO.builder()
+        return LoginResponse.builder()
                 .token(token)
                 .username(user.getUsername())
                 .roles(roles)

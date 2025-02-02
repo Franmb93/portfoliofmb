@@ -1,7 +1,7 @@
 package com.franmunozbetanzos.portfolio.service;
 
-import com.franmunozbetanzos.portfolio.dto.LoginRequestDTO;
-import com.franmunozbetanzos.portfolio.dto.LoginResponseDTO;
+import com.franmunozbetanzos.portfolio.dto.LoginRequest;
+import com.franmunozbetanzos.portfolio.dto.LoginResponse;
 import com.franmunozbetanzos.portfolio.security.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,13 +39,13 @@ class AuthServiceTest {
     private static final String PASSWORD = "testPass";
     private static final String TOKEN = "test.jwt.token";
 
-    private LoginRequestDTO loginRequest;
+    private LoginRequest loginRequest;
     private UserDetails userDetails;
     private Authentication authentication;
 
     @BeforeEach
     void setUp() {
-        loginRequest = LoginRequestDTO.builder()
+        loginRequest = LoginRequest.builder()
                 .username(USERNAME)
                 .password(PASSWORD)
                 .build();
@@ -71,7 +71,7 @@ class AuthServiceTest {
         when(jwtService.generateToken(userDetails)).thenReturn(TOKEN);
 
         // When
-        LoginResponseDTO response = authService.login(loginRequest);
+        LoginResponse response = authService.login(loginRequest);
 
         // Then
         assertNotNull(response);
@@ -119,7 +119,7 @@ class AuthServiceTest {
         when(jwtService.generateToken(customUser)).thenReturn(TOKEN);
 
         // When
-        LoginResponseDTO response = authService.login(loginRequest);
+        LoginResponse response = authService.login(loginRequest);
 
         // Then
         assertNotNull(response);
@@ -142,7 +142,7 @@ class AuthServiceTest {
         when(jwtService.generateToken(userWithNoRoles)).thenReturn(TOKEN);
 
         // When
-        LoginResponseDTO response = authService.login(loginRequest);
+        LoginResponse response = authService.login(loginRequest);
 
         // Then
         assertNotNull(response);
@@ -171,7 +171,7 @@ class AuthServiceTest {
         when(jwtService.generateToken(userWithOrderedRoles)).thenReturn(TOKEN);
 
         // When
-        LoginResponseDTO response = authService.login(loginRequest);
+        LoginResponse response = authService.login(loginRequest);
 
         // Then
         assertNotNull(response);

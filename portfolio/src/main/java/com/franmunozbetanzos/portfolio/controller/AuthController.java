@@ -1,7 +1,8 @@
 package com.franmunozbetanzos.portfolio.controller;
 
-import com.franmunozbetanzos.portfolio.dto.LoginRequestDTO;
-import com.franmunozbetanzos.portfolio.dto.LoginResponseDTO;
+import com.franmunozbetanzos.portfolio.dto.LoginRequest;
+import com.franmunozbetanzos.portfolio.dto.LoginResponse;
+import com.franmunozbetanzos.portfolio.dto.RegisterRequest;
 import com.franmunozbetanzos.portfolio.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +28,20 @@ public class AuthController {
     /**
      * Handles user login requests.
      *
-     * @param LoginRequestDTO the login credentials
+     * @param request the login credentials
      * @return JWT token and user information if authentication is successful
      */
     @PostMapping(LOGIN_PATH)
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO request) {
-        LoginResponseDTO response = authService.login(request);
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
+        LoginResponse response = authService.login(request);
         return ResponseEntity.ok(response);
+    }
+
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
+
+        return ResponseEntity.ok()
+                .build();
     }
 }

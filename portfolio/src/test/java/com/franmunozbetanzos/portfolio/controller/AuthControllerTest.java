@@ -1,8 +1,8 @@
 package com.franmunozbetanzos.portfolio.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.franmunozbetanzos.portfolio.dto.LoginRequestDTO;
-import com.franmunozbetanzos.portfolio.dto.LoginResponseDTO;
+import com.franmunozbetanzos.portfolio.dto.LoginRequest;
+import com.franmunozbetanzos.portfolio.dto.LoginResponse;
 import com.franmunozbetanzos.portfolio.service.AuthService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,18 +49,18 @@ class AuthControllerTest {
     @Test
     void login_ShouldReturnToken_WhenCredentialsAreValid() throws Exception {
         // Given
-        LoginRequestDTO loginRequest = LoginRequestDTO.builder()
+        LoginRequest loginRequest = LoginRequest.builder()
                 .username(USERNAME)
                 .password(PASSWORD)
                 .build();
 
-        LoginResponseDTO loginResponse = LoginResponseDTO.builder()
+        LoginResponse loginResponse = LoginResponse.builder()
                 .token(TOKEN)
                 .username(USERNAME)
                 .roles(new String[]{"USER"})
                 .build();
 
-        when(authService.login(any(LoginRequestDTO.class))).thenReturn(loginResponse);
+        when(authService.login(any(LoginRequest.class))).thenReturn(loginResponse);
 
         // When & Then
         mockMvc.perform(post(AUTH_PATH + LOGIN_PATH).contentType(MediaType.APPLICATION_JSON)
@@ -71,13 +71,13 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.username").value(USERNAME))
                 .andExpect(jsonPath("$.roles[0]").value("USER"));
 
-        verify(authService).login(any(LoginRequestDTO.class));
+        verify(authService).login(any(LoginRequest.class));
     }
 
     @Test
     void login_ShouldReturn400_WhenUsernameIsEmpty() throws Exception {
         // Given
-        LoginRequestDTO loginRequest = LoginRequestDTO.builder()
+        LoginRequest loginRequest = LoginRequest.builder()
                 .username("")
                 .password(PASSWORD)
                 .build();
@@ -94,7 +94,7 @@ class AuthControllerTest {
     @Test
     void login_ShouldReturn400_WhenPasswordIsEmpty() throws Exception {
         // Given
-        LoginRequestDTO loginRequest = LoginRequestDTO.builder()
+        LoginRequest loginRequest = LoginRequest.builder()
                 .username(USERNAME)
                 .password("")
                 .build();
@@ -121,7 +121,7 @@ class AuthControllerTest {
     @Test
     void login_ShouldReturn415_WhenContentTypeIsNotJson() throws Exception {
         // Given
-        LoginRequestDTO loginRequest = LoginRequestDTO.builder()
+        LoginRequest loginRequest = LoginRequest.builder()
                 .username(USERNAME)
                 .password(PASSWORD)
                 .build();
