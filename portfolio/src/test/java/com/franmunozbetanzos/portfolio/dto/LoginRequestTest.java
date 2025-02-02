@@ -9,7 +9,6 @@ import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import static jakarta.validation.Validation.buildDefaultValidatorFactory;
@@ -20,18 +19,12 @@ class LoginRequestTest {
     private static final String USERNAME = "testUser";
     private static final String PASSWORD = "testPassword";
     private static Validator validator;
-    private static MessageInterpolator messageInterpolator;
 
     @BeforeAll
     static void setUp() {
         try (ValidatorFactory factory = buildDefaultValidatorFactory()) {
-            // Crear el interpolador de mensajes con el ResourceBundle
-            ResourceBundle bundle = ResourceBundle.getBundle("messages");
-            messageInterpolator = new ResourceBundleMessageInterpolator(
-                    new PlatformResourceBundleLocator("messages")
-            );
+            MessageInterpolator messageInterpolator = new ResourceBundleMessageInterpolator(new PlatformResourceBundleLocator("messages"));
 
-            // Configurar el validator con el interpolador
             validator = factory.usingContext()
                     .messageInterpolator(messageInterpolator)
                     .getValidator();
