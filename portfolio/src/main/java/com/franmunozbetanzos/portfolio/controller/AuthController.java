@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.franmunozbetanzos.portfolio.constant.ApiConstants.AUTH_PATH;
-import static com.franmunozbetanzos.portfolio.constant.ApiConstants.LOGIN_PATH;
+import static com.franmunozbetanzos.portfolio.constant.ApiConstants.*;
 
 /**
  * Controller responsible for handling authentication-related endpoints.
@@ -38,7 +37,8 @@ public class AuthController {
     }
 
 
-    @PostMapping("/register")
+
+    @PostMapping(REGISTER_PATH)
     public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
 
         return ResponseEntity.ok()

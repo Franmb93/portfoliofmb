@@ -165,7 +165,7 @@ class LoginRequestTest {
 
         // Then
         assertEquals(1, violations.size());
-        assertEquals("La contraseña es obligatoria", violations.iterator()
+        assertEquals("La contrasena es obligatoria", violations.iterator()
                 .next()
                 .getMessage());
     }
@@ -183,7 +183,7 @@ class LoginRequestTest {
 
         // Then
         assertEquals(1, violations.size());
-        assertEquals("La contraseña es obligatoria", violations.iterator()
+        assertEquals("La contrasena es obligatoria", violations.iterator()
                 .next()
                 .getMessage());
     }
@@ -201,7 +201,7 @@ class LoginRequestTest {
 
         // Then
         assertEquals(1, violations.size());
-        assertEquals("La contraseña es obligatoria", violations.iterator()
+        assertEquals("La contrasena es obligatoria", violations.iterator()
                 .next()
                 .getMessage());
     }

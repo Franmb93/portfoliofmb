@@ -2,6 +2,12 @@ package com.franmunozbetanzos.portfolio.service;
 
 import com.franmunozbetanzos.portfolio.dto.LoginRequest;
 import com.franmunozbetanzos.portfolio.dto.LoginResponse;
+import com.franmunozbetanzos.portfolio.dto.RegisterRequest;
+import com.franmunozbetanzos.portfolio.exception.BadRegisterRequestException;
+import com.franmunozbetanzos.portfolio.model.Role;
+import com.franmunozbetanzos.portfolio.model.User;
+import com.franmunozbetanzos.portfolio.repository.RoleRepository;
+import com.franmunozbetanzos.portfolio.repository.UserRepository;
 import com.franmunozbetanzos.portfolio.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,7 +15,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Set;
 
 import static com.franmunozbetanzos.portfolio.constant.ApiConstants.ROLE_;
 
@@ -19,6 +29,9 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     public LoginResponse login(LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
@@ -37,6 +50,26 @@ public class AuthService {
                 .username(user.getUsername())
                 .roles(roles)
                 .build();
+    }
+
+    public void register(RegisterRequest request) {
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new BadRegisterRequestException("El nombre de usuario ya existe.");
+        }
+
+        Role userRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new BadRegisterRequestException("No se encontró el rol de usuario."));
+
+        User newUser = User.builder()
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .enabled(true)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .roles(Set.of(userRole))
+                .build();
+
+        userRepository.save(newUser);
     }
 
 

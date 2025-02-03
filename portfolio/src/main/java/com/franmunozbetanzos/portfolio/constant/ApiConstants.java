@@ -10,6 +10,7 @@ public class ApiConstants {
 
     // Constantes AuthController
     public static final String LOGIN_PATH = "/login";
+    public static final String REGISTER_PATH = "/register";
 
     // Constantes TestController
     public static final String TEST_ERROR_PATH = "/test-error";

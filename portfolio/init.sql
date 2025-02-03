@@ -1,9 +1,9 @@
 CREATE
-USER franmb93 WITH PASSWORD 'franmb93';
+    USER franmb93 WITH PASSWORD 'franmb93';
 ALTER
-USER franmb93 WITH SUPERUSER;
+    USER franmb93 WITH SUPERUSER;
 GRANT ALL PRIVILEGES ON DATABASE
-portfolio TO franmb93;
+    portfolio TO franmb93;
 
 -- Crear tabla de usuarios
 CREATE TABLE users
@@ -11,6 +11,7 @@ CREATE TABLE users
     id         SERIAL PRIMARY KEY,
     username   VARCHAR(50)  NOT NULL UNIQUE,
     password   VARCHAR(100) NOT NULL,
+    email      VARCHAR(255) NOT NULL,
     enabled    BOOLEAN   DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -57,17 +58,19 @@ CREATE INDEX idx_user_roles_role_id ON user_roles (role_id);
 
 -- Crear trigger para actualizar updated_at
 CREATE
-OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
+    OR REPLACE FUNCTION update_updated_at_column()
+    RETURNS TRIGGER AS
+$$
 BEGIN
     NEW.updated_at
-= CURRENT_TIMESTAMP;
-RETURN NEW;
+        = CURRENT_TIMESTAMP;
+    RETURN NEW;
 END;
 $$
-language 'plpgsql';
+    language 'plpgsql';
 
 CREATE TRIGGER update_users_updated_at
     BEFORE UPDATE
     ON users
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+    FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
