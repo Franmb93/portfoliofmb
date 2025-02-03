@@ -1,7 +1,7 @@
 jwt:
   secret: ${JWT_SECRET:VGhpc0lzQVZlcnlTZWN1cmVBbmRMb25nU2VjcmV0S2V5Rm9yVGhlSldUVG9rZW5HZW5lcmF0aW9u}
   expiration: 7200000
-  
+
 spring:
   application:
     name: portfolio
@@ -16,3 +16,9 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
   security:
+
+  logging:
+    level:
+      root: DEBUG
+    file:
+      name: logs/portfolio.log

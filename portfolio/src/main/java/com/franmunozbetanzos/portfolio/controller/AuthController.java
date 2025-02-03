@@ -6,6 +6,7 @@ import com.franmunozbetanzos.portfolio.dto.RegisterRequest;
 import com.franmunozbetanzos.portfolio.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,8 +41,7 @@ public class AuthController {
 
     @PostMapping(REGISTER_PATH)
     public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
-
-        return ResponseEntity.ok()
-                .build();
+        authService.register(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

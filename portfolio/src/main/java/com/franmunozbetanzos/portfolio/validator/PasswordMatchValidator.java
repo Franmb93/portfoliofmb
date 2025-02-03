@@ -11,11 +11,13 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
 
     private String passwordField;
     private String confirmPasswordField;
+    private String message;
 
     @Override
     public void initialize(PasswordMatch constraintAnnotation) {
         this.passwordField = constraintAnnotation.password();
         this.confirmPasswordField = constraintAnnotation.confirmPassword();
+        this.message = constraintAnnotation.message();
     }
 
     @Override
@@ -32,14 +34,18 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
             String password = (String) passwordFld.get(value);
             String confirmPassword = (String) confirmPasswordFld.get(value);
 
-            if (password == null || confirmPassword == null) {
+            if (password == null || !password.equals(confirmPassword)) {
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(message)
+                        .addPropertyNode(confirmPasswordField)
+                        .addConstraintViolation();
                 return false;
             }
 
-            return password.equals(confirmPassword);
+            return true;
 
         } catch (Exception e) {
-            log.debug("Las contraseñas no coinciden y no se ha podido validar");
+            log.debug("Error al validar la coincidencia de contraseñas", e);
             return false;
         }
     }

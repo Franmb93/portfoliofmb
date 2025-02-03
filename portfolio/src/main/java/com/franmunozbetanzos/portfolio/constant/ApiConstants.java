@@ -22,6 +22,8 @@ public class ApiConstants {
 
     // Constantes de roles
     public static final String ROLE_ = "ROLE_";
+    public static final String ROLE_USER = ROLE_ + "USER";
+    public static final String ROLE_ADMIN = ROLE_ + "ADMIN";
 
     private ApiConstants() {
         throw new IllegalStateException("Utility class");

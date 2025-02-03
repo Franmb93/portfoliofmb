@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import static com.franmunozbetanzos.portfolio.constant.ApiConstants.ROLE_;
+import static com.franmunozbetanzos.portfolio.constant.ApiConstants.ROLE_USER;
 
 @Service
 @RequiredArgsConstructor
@@ -54,11 +55,11 @@ public class AuthService {
 
     public void register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new BadRegisterRequestException("El nombre de usuario ya existe.");
+            throw new BadRegisterRequestException("${exception.register.username.exists}");
         }
 
-        Role userRole = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new BadRegisterRequestException("No se encontró el rol de usuario."));
+        Role userRole = roleRepository.findByName(ROLE_USER)
+                .orElseThrow(() -> new BadRegisterRequestException("${exception.register.role.exists"));
 
         User newUser = User.builder()
                 .username(request.getUsername())
