@@ -38,10 +38,16 @@ public class AuthController {
     }
 
 
-
+    /**
+     * Handles user registration requests.
+     *
+     * @param request the user information
+     * @return 201 CREATED if registration is successful
+     */
     @PostMapping(REGISTER_PATH)
     public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
         authService.register(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
     }
 }

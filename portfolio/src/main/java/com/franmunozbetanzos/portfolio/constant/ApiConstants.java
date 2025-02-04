@@ -25,6 +25,9 @@ public class ApiConstants {
     public static final String ROLE_USER = ROLE_ + "USER";
     public static final String ROLE_ADMIN = ROLE_ + "ADMIN";
 
+    // Hibernate Filters
+    public static final String ENABLED_FILTER = "enabledFilter";
+
     private ApiConstants() {
         throw new IllegalStateException("Utility class");
     }

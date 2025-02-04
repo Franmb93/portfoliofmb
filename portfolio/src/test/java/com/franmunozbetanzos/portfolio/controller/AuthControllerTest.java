@@ -3,6 +3,7 @@ package com.franmunozbetanzos.portfolio.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.franmunozbetanzos.portfolio.dto.LoginRequest;
 import com.franmunozbetanzos.portfolio.dto.LoginResponse;
+import com.franmunozbetanzos.portfolio.dto.RegisterRequest;
 import com.franmunozbetanzos.portfolio.service.AuthService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,8 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import static com.franmunozbetanzos.portfolio.constant.ApiConstants.AUTH_PATH;
-import static com.franmunozbetanzos.portfolio.constant.ApiConstants.LOGIN_PATH;
+import static com.franmunozbetanzos.portfolio.constant.ApiConstants.*;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -27,7 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthControllerTest {
 
     private static final String USERNAME = "testUser";
-    private static final String PASSWORD = "testPass";
+    private static final String PASSWORD = "Test1234@";
+    private static final String EMAIL = "test@example.com";
     private static final String TOKEN = "test.jwt.token";
 
     @Mock
@@ -75,6 +76,62 @@ class AuthControllerTest {
     }
 
     @Test
+    void register_ShouldReturnCreated_WhenRegistrationIsSuccessful() throws Exception {
+        // Given
+        RegisterRequest registerRequest = RegisterRequest.builder()
+                .username(USERNAME)
+                .password(PASSWORD)  // Cambiado ! por @ para cumplir el patrón exacto
+                .repeatPassword(PASSWORD)  // Debe coincidir con el password
+                .email(EMAIL)
+                .build();
+
+        doNothing().when(authService)
+                .register(any(RegisterRequest.class));
+
+        // When & Then
+        mockMvc.perform(post(AUTH_PATH + REGISTER_PATH)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(registerRequest)))
+                .andExpect(status().isCreated());
+
+        verify(authService).register(any(RegisterRequest.class));
+    }
+
+    @Test
+    void register_ShouldReturn400_WhenUsernameIsEmpty() throws Exception {
+        // Given
+        RegisterRequest registerRequest = RegisterRequest.builder()
+                .username("")
+                .password(PASSWORD)
+                .build();
+
+        // When & Then
+        mockMvc.perform(post(AUTH_PATH + REGISTER_PATH).contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(registerRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException()));
+
+        verifyNoInteractions(authService);
+    }
+
+    @Test
+    void register_ShouldReturn400_WhenPasswordIsEmpty() throws Exception {
+        // Given
+        RegisterRequest registerRequest = RegisterRequest.builder()
+                .username(USERNAME)
+                .password("")
+                .build();
+
+        // When & Then
+        mockMvc.perform(post(AUTH_PATH + REGISTER_PATH).contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(registerRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException()));
+
+        verifyNoInteractions(authService);
+    }
+
+    @Test
     void login_ShouldReturn400_WhenUsernameIsEmpty() throws Exception {
         // Given
         LoginRequest loginRequest = LoginRequest.builder()
@@ -119,6 +176,16 @@ class AuthControllerTest {
     }
 
     @Test
+    void register_ShouldReturn400_WhenRequestBodyIsInvalid() throws Exception {
+        // When & Then
+        mockMvc.perform(post(AUTH_PATH + REGISTER_PATH).contentType(MediaType.APPLICATION_JSON)
+                                .content("invalid json"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(authService);
+    }
+
+    @Test
     void login_ShouldReturn415_WhenContentTypeIsNotJson() throws Exception {
         // Given
         LoginRequest loginRequest = LoginRequest.builder()
@@ -129,6 +196,22 @@ class AuthControllerTest {
         // When & Then
         mockMvc.perform(post(AUTH_PATH + LOGIN_PATH).contentType(MediaType.TEXT_PLAIN)
                                 .content(objectMapper.writeValueAsString(loginRequest)))
+                .andExpect(status().isUnsupportedMediaType());
+
+        verifyNoInteractions(authService);
+    }
+
+    @Test
+    void register_ShouldReturn415_WhenContentTypeIsNotJson() throws Exception {
+        // Given
+        RegisterRequest registerRequest = RegisterRequest.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .build();
+
+        // When & Then
+        mockMvc.perform(post(AUTH_PATH + REGISTER_PATH).contentType(MediaType.TEXT_PLAIN)
+                                .content(objectMapper.writeValueAsString(registerRequest)))
                 .andExpect(status().isUnsupportedMediaType());
 
         verifyNoInteractions(authService);

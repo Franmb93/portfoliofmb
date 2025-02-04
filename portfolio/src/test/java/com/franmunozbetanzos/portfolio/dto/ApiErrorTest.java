@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,7 +17,7 @@ public class ApiErrorTest {
         String message = "Error message";
         String path = "/api/test";
 
-        ApiError apiError = new ApiError(status, timestamp, message, path);
+        ApiError apiError = new ApiError(status, timestamp, Collections.emptyList(), message, path);
 
         assertThat(apiError.getStatus()).isEqualTo(status);
         assertThat(apiError.getTimestamp()).isEqualTo(timestamp);

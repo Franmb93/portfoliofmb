@@ -18,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 import static com.franmunozbetanzos.portfolio.constant.ApiConstants.ROLE_;
@@ -64,14 +63,9 @@ public class AuthService {
         User newUser = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .enabled(true)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .roles(Set.of(userRole))
                 .build();
 
         userRepository.save(newUser);
     }
-
-
 }
