@@ -1,5 +1,6 @@
 package com.franmunozbetanzos.portfolio.security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -7,8 +8,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.crypto.spec.SecretKeySpec;
+import java.lang.reflect.Method;
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -87,4 +95,27 @@ class JwtServiceTest {
             }
         }
     }
+
+
+    @Test
+    public void testExtractClaimWithReflection() throws Exception {
+        JwtService jwtService = new JwtService(jwtProperties);
+
+        String token = jwtService.generateToken(User.builder()
+                                                        .username("user")
+                                                        .password("password")
+                                                        .roles("USER")
+                                                        .build());
+
+        Method method = JwtService.class.getDeclaredMethod("extractClaim", String.class, Function.class);
+        method.setAccessible(true);
+
+        // Accede al método privado usando ReflectionTestUtils
+        String extractedUsername = (String) ReflectionTestUtils.invokeMethod(jwtService, "extractClaim", token, (Function<Claims, String>) Claims::getSubject);
+
+        assertEquals("user", extractedUsername);
+    }
+
+
+
 }
