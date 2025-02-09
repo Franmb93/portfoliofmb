@@ -6,8 +6,11 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.franmunozbetanzos.portfolio.model.TableColumnsConstants.PASSWORD;
+import static com.franmunozbetanzos.portfolio.model.TableColumnsConstants.USERNAME;
+
 @Entity
-@Table(name = "users")
+@Table(name = TableColumnsConstants.USERS)
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -15,14 +18,15 @@ import java.util.Set;
 @Builder
 public class User extends BaseEntity {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", length = 50, nullable = false, unique = true)
+    @Column(name = USERNAME, length = 50, nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password", length = 100, nullable = false)
+    @Column(name = PASSWORD, length = 100, nullable = false)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

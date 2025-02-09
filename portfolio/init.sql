@@ -74,3 +74,13 @@ CREATE TRIGGER update_users_updated_at
     ON users
     FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TABLE contact
+(
+    id         SERIAL PRIMARY KEY,
+    name       VARCHAR(100) NOT NULL,
+    email      VARCHAR(100) NOT NULL,
+    message    TEXT         NOT NULL,
+    enabled    BOOLEAN   DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
